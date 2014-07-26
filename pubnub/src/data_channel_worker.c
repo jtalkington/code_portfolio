@@ -32,7 +32,8 @@ void finish_work(data_message_t *work) {
 
     control_message_t *ctrlMsg = create_control_message(work);
 
-    LOG_DEBUG("Created control channel object: %llu, %llu, %i.\n", ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
+    LOG_DEBUG("Created control channel object: %llu, %llu, %s.\n",
+            ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
 
     free(work);
 }

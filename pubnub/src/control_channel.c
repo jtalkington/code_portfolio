@@ -25,7 +25,7 @@ control_message_t* create_control_message(data_message_t *dataMsg) {
 
     control_message_t *ctrlMsg = calloc(1, sizeof(control_message_t));
 
-    ctrlMsg->result = dataMsg->result;
+    ctrlMsg->result = get_process_result_string(dataMsg->result);
     ctrlMsg->uuid = dataMsg->uuid;
 
     pthread_t tid = pthread_self();

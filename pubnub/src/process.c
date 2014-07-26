@@ -14,32 +14,23 @@
 # * limitations under the License.
 # */
 
-#ifndef __control_channel_h_
-#define __control_channel_h_
-
-#include <stdbool.h>
 #include "process.h"
 
-typedef struct control_message_t {
-    /// The thread id of the worker 
-    uint64_t workerId;
+const char *get_process_result_string(process_result_t result) {
 
-    /// The uuid of the processed message.
-    uint64_t uuid;
+    switch(result) {
+        case PROCESS_SUCCESS:
+            {
+                return "success";
+            } break;
+        case PROCESS_FAILURE:
+            {
+                return "failure";
+            } break;
+        default:
+            break;
+    }
 
-    /// The result of the processing.
-    const char *result;
-
-} control_message_t;
-
-/**
- * @brief Creates a control_message_t object and returns it's pointer to the
- * caller.
- *
- * @param dataMsg The data_message_t object that was processed.
- * @param result The result of the processing.
- */
-control_message_t* create_control_message(data_message_t *dataMsg);
-
-#endif // __control_channel_h_
+    return "unkown";
+}
 
