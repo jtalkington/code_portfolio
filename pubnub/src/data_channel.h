@@ -14,15 +14,30 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#ifndef __data_channel_h_
+#define __data_channel_h_
 
-bin_PROGRAMS = bin/pubnub_listener
+#include <stdbool.h>
+#include <stdint.h>
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+#include "process.h"
+
+/**
+ * @brief The parsed contents of a message on the data channel.
+ *
+ * This is the data that is sent in a data_channel message, in struct form.
+ */
+typedef struct data_message_t {
+    /// The unique id of this message.
+    uint64_t uuid;
+
+    /// The number of seconds for a worker to sleep.
+    uint32_t sleepTime;
+
+    /// The results of processing
+    process_result_t result;
+
+} data_message_t;
+
+#endif // __data_channel_h_
+

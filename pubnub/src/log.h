@@ -1,4 +1,4 @@
-#/*
+/*
 # Copyright 2014 Jerry Talkington
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,16 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#ifndef __log_h_
+#define __log_h_
 
-bin_PROGRAMS = bin/pubnub_listener
+#include <stdio.h>
+#include "config.h"
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+#ifdef ENABLE_DEBUG
+# define LOG_DEBUG printf
+#endif
+
+#define LOG_ERROR  printf
+
+#endif //__log_h_

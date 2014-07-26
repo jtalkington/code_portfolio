@@ -1,4 +1,4 @@
-#/*
+/*
 # Copyright 2014 Jerry Talkington
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,22 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#include <stdlib.h>
+#include <curl/curl.h>
+#include <stdbool.h>
 
-bin_PROGRAMS = bin/pubnub_listener
+#include "config.h"
+#include "listener.h"
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+bool g_Shutdown = false;
+
+int main() {
+
+    // must be done before threads are created
+    curl_global_init(CURL_GLOBAL_ALL);
+
+    listener_init();
+
+    return listener_loop("data_channel");
+
+}

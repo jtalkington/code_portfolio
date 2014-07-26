@@ -1,4 +1,4 @@
-#/*
+/*
 # Copyright 2014 Jerry Talkington
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,25 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#include <string.h>
+#include <sys/types.h>
+#include <pthread.h>
 
-bin_PROGRAMS = bin/pubnub_listener
+#include "data_channel.h"
+#include "control_channel.h"
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+control_message_t* create_control_message(data_message_t *dataMsg) {
+
+    control_message_t *ctrlMsg = calloc(1, sizeof(control_message_t));
+
+    ctrlMsg->result = dataMsg->result;
+    ctrlMsg->uuid = dataMsg->uuid;
+
+    pthread_t tid = pthread_self();
+    memcpy(&ctrlMsg->workerId, &tid,
+            (sizeof(ctrlMsg->workerId) > sizeof(tid) ? sizeof(tid) : sizeof(ctrlMsg->workerId)));
+
+    return ctrlMsg;
+}
+
+    

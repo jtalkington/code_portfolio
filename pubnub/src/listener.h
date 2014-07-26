@@ -14,15 +14,11 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#ifndef __listener_h_
+#define __listener_h_
 
-bin_PROGRAMS = bin/pubnub_listener
+bool listener_init(void);
+int listener_loop(const char *channel);
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+#endif // __listener_h_
+

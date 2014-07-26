@@ -1,4 +1,4 @@
-#/*
+/*
 # Copyright 2014 Jerry Talkington
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,16 @@
 # limitations under the License.
 #*/
 
-AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
-AM_LDFLAGS = ${CONF_LDFLAGS}
-ACLOCAL_AMFLAGS = -I m4
+#ifndef __data_channel_worker_h__
+#define __data_channel_worker_h__
 
-bin_PROGRAMS = bin/pubnub_listener
+#include "data_channel.h"
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c
+/**
+ * @brief Dispatches the work.
+ * @param work The data_message_t information about the work to be done.
+ */
+void dispatch_work(data_message_t *work);
+
+
+#endif // __data_channel_worker_h__
