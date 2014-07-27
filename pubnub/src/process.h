@@ -9,7 +9,11 @@
  */
 typedef enum process_result_t {
     PROCESS_SUCCESS = 0,
-    PROCESS_FAILURE
+    PROCESS_FAILURE,
+    PROCESS_PN_SUBSCRIBE_FAIL,
+    PROCESS_INIT_SYNC_FAIL,
+    PROCESS_INIT_PN_FAIL,
+    PROCESS_PUBLISH_FAIL
 } process_result_t;
 
 /**

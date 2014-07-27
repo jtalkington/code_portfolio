@@ -35,6 +35,8 @@ void finish_work(data_message_t *work) {
     LOG_DEBUG("Created control channel object: %llu, %llu, %s.\n",
             ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
 
+    publish_control_message(ctrlMsg);
+
     free(work);
 }
 

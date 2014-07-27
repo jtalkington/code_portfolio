@@ -24,7 +24,10 @@ typedef struct control_message_t {
     /// The thread id of the worker 
     uint64_t workerId;
 
-    /// The uuid of the processed message.
+    /// The uuid of the processed message. Unfortunately the API does not expose
+    /// time_token, so we have to generate it in the request. Exposing it in the
+    /// API would be trivial, but I want this program to work with the existing
+    /// code. 
     uint64_t uuid;
 
     /// The result of the processing.
@@ -40,6 +43,21 @@ typedef struct control_message_t {
  * @param result The result of the processing.
  */
 control_message_t* create_control_message(data_message_t *dataMsg);
+
+/**
+ * @brief Initialize the control channel.
+ *
+ * @returns A process_result_t result code.
+ */
+process_result_t control_channel_init();
+
+/**
+ * @brief Publish and free a control message.
+ *
+ * @param msg The message to publish.
+ * @returns The result of the request.
+ */
+process_result_t publish_control_message(control_message_t *msg);
 
 #endif // __control_channel_h_
 

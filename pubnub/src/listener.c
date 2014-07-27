@@ -32,27 +32,22 @@ static struct pubnub_sync *sg_Sync = NULL;
 /// The subscribe context.
 static struct pubnub *sg_Pn = NULL;
 
+/// @TODO Implement a signal handler for graceful shutdown.
 extern bool g_Shutdown;
 
-/**
- * @brief Initialize the subscriber context.
- * @returns False on success, True if the context was already initialized.
- */
-bool listener_init() {
+process_result_t listener_init() {
 
     return init_pubnub_sync_context(&sg_Pn, &sg_Sync);
 
 }
 
-/**
- * @brief Pull the messages from sync queue and send them to the processor.
- * @returns Any error messages returned by pubnub.
- */
-int listener_loop(const char *channel) {
+process_result_t listener_loop(const char *channel) {
 
-    // It's ok if this fails, since it may have already been initialized. Check
-    // return value to avoid compiler warning.
-    if (listener_init()) {};
+    process_result_t result = listener_init();
+    
+    if (result != PROCESS_SUCCESS) {
+        return result;
+    }
 
     do {
         pubnub_subscribe(sg_Pn, channel, -1, NULL, NULL);
@@ -60,7 +55,7 @@ int listener_loop(const char *channel) {
         enum pubnub_res retVal = pubnub_sync_last_result(sg_Sync);
 
         if (retVal != PNR_OK) {
-            return retVal;
+            return PROCESS_PN_SUBSCRIBE_FAIL;
         }
 
         struct json_object *msg = pubnub_sync_last_response(sg_Sync);
@@ -77,8 +72,8 @@ int listener_loop(const char *channel) {
     
     } while (g_Shutdown == false);
 
-    // This should never be reached, but avoid a compiler warning.
-    return PNR_CANCELLED;
+    // graceful shutdown
+    return PROCESS_SUCCESS;
 }
 
 

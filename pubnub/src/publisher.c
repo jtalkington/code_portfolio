@@ -14,30 +14,27 @@
 # * limitations under the License.
 # */
 
-#include <stdbool.h>
+#include <json.h>
 #include <pubnub.h>
-#include <pubnub-sync.h>
 
-#include "config.h"
-#include "process.h"
+#include "publisher.h"
+#include "pubnub_init.h"
 
-process_result_t init_pubnub_sync_context(struct pubnub **pnPtr, struct pubnub_sync **syncPtr) {
+/// The sync context.
+static struct pubnub_sync *sg_Sync = NULL;
+/// The pubnub context.
+static struct pubnub *sg_Pn = NULL;
 
-    if ((*syncPtr) == NULL) {
-        (*syncPtr) = pubnub_sync_init();
+process_result_t publisher_init() {
+    return init_pubnub_sync_context(&sg_Pn, &sg_Sync);
+}
 
-        if ((*syncPtr) == NULL) {
-            return PROCESS_INIT_SYNC_FAIL;
-        }
-    }
+process_result_t publish_message(const char *channel, json_object *msg) {
 
-    if ((*pnPtr) == NULL) {
-        (*pnPtr) = pubnub_init(PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY,
-                            &pubnub_sync_callbacks, (*syncPtr));
+    pubnub_publish(sg_Pn, channel, msg, -1, NULL, NULL);
 
-        if ((*pnPtr) == NULL) {
-            return PROCESS_INIT_PN_FAIL;
-        }
+    if (pubnub_sync_last_result(sg_Sync) != PNR_OK) {
+        return PROCESS_PUBLISH_FAIL;
     }
 
     return PROCESS_SUCCESS;

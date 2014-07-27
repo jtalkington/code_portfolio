@@ -17,7 +17,22 @@
 #ifndef __listener_h_
 #define __listener_h_
 
-bool listener_init(void);
+#include "process.h"
+
+/**
+ * @brief Initialize the subscriber context.
+ * @returns PROCESS_FAILURE if initialization failed, otherwise PROCESS_SUCCESS.
+ */
+process_result_t listener_init(void);
+
+/**
+ * @brief Pull the messages from channel and send them to the processor, using
+ * the sync API.
+ * @returns Any error messages returned by pubnub.
+ *
+ * @TODO This should accept a callback function for processing instead of
+ * relying on function named "process_message" to be linked in.
+ */
 int listener_loop(const char *channel);
 
 #endif // __listener_h_

@@ -13,22 +13,20 @@
 # * See the License for the specific language governing permissions and
 # * limitations under the License.
 # */
-#ifndef __pubnub_init_h_
-#define __pubnub_init_h_
 
-#include <stdbool.h>
-#include <pubnub.h>
-#include <pubnub-sync.h>
-
+#include <json.h>
 #include "process.h"
 
 /**
- * @brief Initialize a pubnub context and sync handler.
- *
- * @param pnPtr A pointer to pubnub pointer.
- * @param syncPtr A pointer to pubnub_sync pointer.
- *
+ * @brief Initialize the publisher context.
+ * @returns PROCESS_FAILURE if initialization failed, otherwise PROCESS_SUCCESS.
  */
-process_result_t init_pubnub_sync_context(struct pubnub **pnPtr, struct pubnub_sync **syncPtr);
+process_result_t publisher_init(void);
 
-#endif // __pubnub_init_h_
+/**
+ * @brief Publish a message on the publisher context.
+ *
+ * @param channel The channel to publish on.
+ * @param msg The json message to send.
+ */
+process_result_t publish_message(const char *channel, json_object *msg);

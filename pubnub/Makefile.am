@@ -26,4 +26,5 @@ bin_pubnub_listener_SOURCES = src/main_listener.c \
 							 src/data_channel_worker.c \
 							 src/control_channel.c \
 							 src/pubnub_init.c \
-							 src/process.c
+							 src/process.c \
+							 src/publisher.c

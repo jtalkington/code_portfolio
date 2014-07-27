@@ -28,8 +28,11 @@
  * This is the data that is sent in a data_channel message, in struct form.
  */
 typedef struct data_message_t {
-    /// The unique id of this message.
-    uint64_t uuid;
+    /// The uuid of the processed message. Unfortunately the API does not expose
+    /// time_token, so we have to generate it in the request. Exposing it in the
+    /// API would be trivial, but I want this program to work with the existing
+    /// code.
+    uint64_t uuid;    
 
     /// The number of seconds for a worker to sleep.
     uint32_t sleepTime;
