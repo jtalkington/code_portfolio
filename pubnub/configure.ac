@@ -43,7 +43,6 @@ AC_ARG_ENABLE([debug],
     [AC_DEFINE([ENABLE_DEBUG], [1])]
 )
 
-
 LT_INIT
 AC_LANG([C++])
 AC_PROG_CC
@@ -62,6 +61,15 @@ PKG_CHECK_MODULES([PKGS], "${PKGS_REQUIRED}")
 
 AC_SUBST([CONF_CPPFLAGS], "${PKGS_CFLAGS}")
 AC_SUBST([CONF_LDFLAGS], "${PKGS_LIBS}")
+
+# Test for the check library, and enable tests if it exists.
+
+PKG_CHECK_MODULES([TEST], "check", , [AC_SUBST([DISABLE_TEST])])
+
+AM_CONDITIONAL([ENABLE_TEST], [test "x$TEST_CFLAGS" != "x"])
+
+AC_SUBST([TEST_CPPFLAGS], "${TEST_CFLAGS}")
+AC_SUBST([TEST_LDFLAGS], "${TEST_LIBS}")
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_HEADERS([config.h])

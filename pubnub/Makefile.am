@@ -20,11 +20,27 @@ ACLOCAL_AMFLAGS = -I m4
 
 bin_PROGRAMS = bin/pubnub_listener
 
-bin_pubnub_listener_SOURCES = src/main_listener.c \
-							 src/listener.c \
-							 src/data_channel_process.c \
-							 src/data_channel_worker.c \
-							 src/control_channel.c \
-							 src/pubnub_init.c \
-							 src/process.c \
-							 src/publisher.c
+source_files =  src/listener.c \
+				src/data_channel_process.c \
+				src/data_channel_worker.c \
+				src/control_channel.c \
+				src/pubnub_init.c \
+				src/process.c \
+				src/publisher.c \
+				src/fifo.c
+
+bin_pubnub_listener_SOURCES = src/main_listener.c ${source_files}
+
+if ENABLE_TEST
+check_PROGRAMS = bin/test_queue bin/test_control_channel
+TESTS = $(check_PROGRAMS)
+bin_test_queue_SOURCES = test/test_queue.c test/unit_test_main.c
+bin_test_queue_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
+bin_test_queue_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
+
+bin_test_control_channel_SOURCES = test/test_control_channel.c test/unit_test_main.c ${source_files}
+bin_test_control_channel_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
+bin_test_control_channel_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
+
+endif
+
