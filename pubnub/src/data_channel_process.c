@@ -17,74 +17,34 @@
 #include <json.h>
 #include <stdint.h>
 
+#include "data_channel_process.h"
 #include "process.h"
 #include "log.h"
 #include "data_channel_worker.h"
-
-/**
- * Extract a uint32_t from data channel message by name.
- *
- * @param msg The message to extract the data from.
- * @param key The key to extract.
- * @param dst A pointer to an int to place the value in.
- */
-process_result_t message_get_int(json_object *msg, const char *key, uint32_t *dst) {
-    json_object *tmpJson = NULL;
-
-    if (!json_object_object_get_ex(msg, key, &tmpJson)) {
-        LOG_ERROR("Could not read \"%s\" from message.\n", key);
-        return PROCESS_FAILURE;
-    }
-
-    // Ugh, no way to check there result of this.
-    *dst = (uint32_t)json_object_get_int(tmpJson);
-
-    return PROCESS_SUCCESS;
-}
-
-/**
- * Extract a uint64_t from data channel message by name.
- *
- * @param msg The message to extract the data from.
- * @param key The key to extract.
- * @param dst A pointer to an int to place the value in.
- */
-process_result_t message_get_uint64(json_object *msg, const char *key, uint64_t *dst) {
-    
-    json_object *tmpJson = NULL;
-
-    if (!json_object_object_get_ex(msg, key, &tmpJson)) {
-        LOG_ERROR("Could not read \"%s\" from message.\n", key);
-        return PROCESS_FAILURE;
-    }
-
-    json_parse_int64(json_object_get_string(tmpJson), (int64_t *)dst);
-
-    return PROCESS_SUCCESS;
-}
-
+#include "json_misc.h"
 
 /**
  * @brief Create an data_message_t* object from a pubnub subscribe response.
  *
  * @param msg The message returned from a pubnub sync.
- * @returns A freshly allocated data_message_t pointer. It is the
- * responsibility of the caller to free.
+ * @returns A freshly allocated data_message_t pointer or NULL. It is the
+ * responsibility of the caller to free. If there is anything wrong with the
+ * message it is completely discarded, and NULL is returned.
  */
 data_message_t* extract_data_message(json_object *msg) {
 
     data_message_t *data = calloc(1, sizeof(data_message_t));
 
-    json_object *msgData = json_object_array_get_idx(msg, 0);
-
-    data->result = message_get_int(msgData, "sleep", &data->sleepTime);
+    data->result = json_get_int(msg, "sleep", &data->sleepTime);
     if (data->result != PROCESS_SUCCESS) {
-        return data;
+        free(data);
+        return NULL;
     }
 
-    data->result = message_get_uint64(msgData, "UUID", &data->uuid);
+    data->result = json_get_uint64(msg, "UUID", &data->uuid);
     if (data->result != PROCESS_SUCCESS) {
-        return data;
+        free(data);
+        return NULL;
     }
 
     return data;
@@ -92,7 +52,12 @@ data_message_t* extract_data_message(json_object *msg) {
 
 void process_message(struct pubnub *pnCtx, json_object *msg) {
 
-    data_message_t *work = extract_data_message(msg);
+    // Extract the message from the array.  The PubNub library already removes
+    // the time_token and channel lists from the array, so it ends up being a
+    // one object array.
+    json_object *msgData = json_object_array_get_idx(msg, 0);
+    
+    data_message_t *work = extract_data_message(msgData);
 
     // We are done with this object now.
     json_object_put(msg);

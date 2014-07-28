@@ -59,5 +59,14 @@ process_result_t control_channel_init();
  */
 process_result_t publish_control_message(control_message_t *msg);
 
+/**
+ * @brief Convert a control message struct to json.
+ *
+ * @param msg The control_message_t structure to translate.
+ * @returns A json_object pointer.
+ */
+json_object *convert_control_message_to_json(control_message_t *msg);
+
+
 #endif // __control_channel_h_
 

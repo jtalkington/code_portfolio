@@ -36,7 +36,7 @@ void finish_work(data_message_t *work) {
             ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
 
     publish_control_message(ctrlMsg);
-
+    
     free(work);
 }
 

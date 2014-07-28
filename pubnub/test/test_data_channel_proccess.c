@@ -14,29 +14,32 @@
 # * limitations under the License.
 # */
 
-
-#include <stdlib.h>
 #include <check.h>
+#include <string.h>
+#include <stdbool.h>
+#include <json.h>
+
 #include "common.h"
 
-bool g_Shutdown = false;
 
-Suite *create_master_suite() {
-    return suite_create("master_suite");
-}
+START_TEST(test_extract_data_message) {
 
-int main() {
-    int failures;
+    struct json_object *jsonMsg = json_object_new_object();
+    json_object_object_add(jsonMsg, "sleep", json_object_new_int(30));
+    json_object_object_add(jsonMsg, "UUID", json_object_new_int64(7));
 
-    SRunner *sr = srunner_create(create_master_suite());
+    data_message_t *dataMsg = extract_data_message(jsonMsg);
 
-    ADD_SUITE(control_channel_suite);
-    ADD_SUITE(data_channel_proccess_suite);
+    ck_assert(dataMsg != NULL);
+    ck_assert(dataMsg->sleepTime == 30);
+    ck_assert(dataMsg->uuid == 7);
+
+} END_TEST;
+
+Suite *data_channel_proccess_suite() {
+    Suite *s = suite_create("data_channel_proccess");
+
+    ADD_TEST(test_extract_data_message);
     
-    srunner_run_all(sr, CK_NORMAL);
-
-    failures = srunner_ntests_failed(sr);
-    srunner_free(sr);
-    return (failures == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return s;
 }
-

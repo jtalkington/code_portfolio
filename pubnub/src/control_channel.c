@@ -72,6 +72,7 @@ process_result_t publish_control_message(control_message_t *msg) {
     result = publish_message("control_channel", msgJson);
 
     json_object_put(msgJson);
+    free(msg);
 
     return result;
 }

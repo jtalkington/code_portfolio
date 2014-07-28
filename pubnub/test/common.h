@@ -17,8 +17,10 @@
 #include <check.h>
 
 #include "../src/data_channel.h"
+#include "../src/data_channel_process.h"
 #include "../src/control_channel.h"
 #include "../src/process.h"
+#include "../src/json_misc.h"
 
 #define ADD_TEST(testName) \
 {\
@@ -27,3 +29,8 @@
     suite_add_tcase(s, tc_##testName); \
 }
 
+#define ADD_SUITE(suiteName) \
+{\
+    Suite *suiteName(void);\
+    srunner_add_suite(sr, suiteName());\
+}

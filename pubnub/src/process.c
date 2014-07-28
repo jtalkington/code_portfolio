@@ -27,6 +27,22 @@ const char *get_process_result_string(process_result_t result) {
             {
                 return "failure";
             } break;
+        case PROCESS_PN_SUBSCRIBE_FAIL:
+            {
+                return "PubNub subscribe failure"
+            } break;
+        case PROCESS_INIT_SYNC_FAIL:
+            {
+                return "PubNub sync init failure";
+            } break;
+        case PROCESS_INIT_PN_FAIL:
+            {
+                return "PubNub context init failure";
+            } break;
+        case PROCESS_PUBLISH_FAIL:
+            {
+                return "PubNub publish failure";
+            } break;
         default:
             break;
     }

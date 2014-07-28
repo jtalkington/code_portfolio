@@ -131,7 +131,7 @@ START_TEST(test_fifo_queue_shift) {
 } END_TEST;
 
 Suite *create_suite() {
-    Suite *s = suite_create("Unit Tests");
+    Suite *s = suite_create("test_queue");
 
     ADD_TEST(test_fq_push);
     ADD_TEST(test_fq_shift);
@@ -140,4 +140,16 @@ Suite *create_suite() {
     
     
     return s;
+}
+
+int main() {
+    int failures;
+
+    SRunner *sr = srunner_create(create_suite());
+
+    srunner_run_all(sr, CK_NORMAL);
+
+    failures = srunner_ntests_failed(sr);
+    srunner_free(sr);
+    return (failures == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
