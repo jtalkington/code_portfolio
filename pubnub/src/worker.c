@@ -23,6 +23,7 @@
 #include "data_message.h"
 #include "fifo.h"
 #include "json_misc.h"
+#include "stats.h"
 
 static fifo_queue_t *sg_WorkQueue = NULL;
 
@@ -42,10 +43,25 @@ void worker_thread_work() {
     // The message comes as a one element array.
     json_object *msgData = json_object_array_get_idx(pnMsg, 0);
 
+    if (msgData == NULL) {
+        /// @TODO make this a distinct type.
+        message_count_increment(COUNTER_UNKOWN_ERROR);
+        json_object_put(pnMsg);
+        return;
+    }
+
     json_object *msg;
     json_object_object_get_ex(msgData, "data", &msg);
 
-    message_type_t type;
+    if (msg == NULL) {
+        /// @TODO make this a distinct type.
+        message_count_increment(COUNTER_UNKOWN_ERROR);
+        json_object_put(msgData);
+        json_object_put(pnMsg);
+        return;
+    }
+
+    message_type_t type = MESSAGE_TYPE_UNKOWN;
     json_get_int(msgData, "messageType", &type);
 
     switch (type) {
@@ -56,6 +72,10 @@ void worker_thread_work() {
         case MESSAGE_TYPE_CONTROL:
             {
                 process_control_message_json(msg);
+            } break;
+        case MESSAGE_TYPE_UNKOWN:
+            {
+                message_count_increment(COUNTER_UNKOWN_ERROR);
             } break;
         default:
             break;

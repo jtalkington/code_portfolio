@@ -29,6 +29,7 @@
 typedef enum message_type_t {
     MESSAGE_TYPE_DATA = 0,
     MESSAGE_TYPE_CONTROL = 1,
+    MESSAGE_TYPE_UNKOWN
 } message_type_t;
 
 /**

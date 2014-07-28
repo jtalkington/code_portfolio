@@ -16,7 +16,7 @@ pubnub = Pubnub(publish_key=g_PublishKey, subscribe_key=g_SubscribeKey,
 channel = "@PUBNUB_MESSAGE_CHANNEL@"
 
 for i in range(0, 256):
-    message = "{ \"messageType\" : 0, \"data\" : { \"sleep\":0, \"UUID\": "+ str(i) + "} }"
+    message = '{ "messageType": 0, "data": { "sleep": 0,"UUID": ' + str(i) + '} }'
     pubnub.publish(channel, message)
 
 

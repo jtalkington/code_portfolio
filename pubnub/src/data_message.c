@@ -36,6 +36,14 @@
  */
 data_message_t* extract_data_message(json_object *msg) {
 
+#ifdef ENABLE_DEBUG
+        int len = json_object_array_length(msg);
+        for (int i = 0; i < len; i++) {
+            json_object *obj = json_object_array_get_idx(msg, i);
+            LOG_DEBUG("received: %s\n", json_object_get_string(obj));
+        }
+#endif
+
     data_message_t *data = calloc(1, sizeof(data_message_t));
 
     data->result = json_get_int(msg, "sleep", &data->sleepTime);

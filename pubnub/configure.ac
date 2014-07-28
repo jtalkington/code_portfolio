@@ -16,8 +16,8 @@
 
 AC_INIT([pubnub-example], 1.0.0, jtalkington@users.noreply.github.com)
 
+AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test", [The PubNub channel to use.])
 AC_SUBST([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test")
-AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "${PUBNUB_MESSAGE_CHANNEL}", [The PubNub channel to use.])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -55,7 +55,6 @@ AC_PROG_CC_C99
 AC_PROG_LD
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
-AX_PROG_PYTHON
 
 PKG_CHECK_EXISTS("json-c", [AC_SUBST([JSON], "json-c")],
     [PKG_CHECK_EXISTS("json", [AC_SUBST([JSON], "json")])])

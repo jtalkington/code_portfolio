@@ -78,7 +78,8 @@ process_result_t publish_control_message(control_message_t *msg) {
         
     message_count_increment(COUNTER_CONTROL_SENT);
 
-    json_object_put(msgJson);
+    // XXX:jlt Disable this for now to diagnose crashes in json-c.
+    //json_object_put(msgJson);
     free(msg);
 
     return result;
@@ -110,7 +111,8 @@ control_message_t* extract_control_message(json_object *msg) {
         return NULL;
     }
 
-    if (json_get_string(msg, "result") == NULL) {
+    data->dataResult = json_get_string(msg, "result");
+    if (data->dataResult == NULL) {
         free(data);
         return NULL;
     }
