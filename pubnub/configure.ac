@@ -16,7 +16,8 @@
 
 AC_INIT([pubnub-example], 1.0.0, jtalkington@users.noreply.github.com)
 
-AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test", [The PubNub channel to use.])
+AC_SUBST([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test")
+AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "${PUBNUB_MESSAGE_CHANNEL}", [The PubNub channel to use.])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -30,6 +31,8 @@ AS_IF([test "x${with_subkey}" != "x"],
     [AC_MSG_ERROR([Must define PubNub subscribe key using --with-subkey=KEY])]
 )
 
+AC_SUBST([PUBNUB_SUBSCRIBE_KEY], "${with_subkey}")
+
 AC_ARG_WITH([pubkey], 
     AS_HELP_STRING([--with-pubkey=KEY], [Set the PubNub pubkey key.]))
 
@@ -37,6 +40,8 @@ AS_IF([test "x${with_pubkey}" != "x"],
     [AC_DEFINE_UNQUOTED([PUBNUB_PUBLISH_KEY], ["${with_pubkey}"], [PubNub Publish Key])],
     [AC_MSG_ERROR([Must define PubNub publish key using --with-pubkey=KEY])]
 )
+
+AC_SUBST([PUBNUB_PUBLISH_KEY], "${with_pubkey}")
 
 AC_DEFINE([ENABLE_DEBUG], [0], [Enable debugging output.])
 
@@ -50,6 +55,7 @@ AC_PROG_CC_C99
 AC_PROG_LD
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+AX_PROG_PYTHON
 
 PKG_CHECK_EXISTS("json-c", [AC_SUBST([JSON], "json-c")],
     [PKG_CHECK_EXISTS("json", [AC_SUBST([JSON], "json")])])
@@ -71,5 +77,6 @@ AC_SUBST([TEST_CPPFLAGS], "${TEST_CFLAGS}")
 AC_SUBST([TEST_LDFLAGS], "${TEST_LIBS}")
 
 AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([src/channel_flood.py], [chmod +x src/channel_flood.py])
 AC_CONFIG_HEADERS([config.h])
 AC_OUTPUT

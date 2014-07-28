@@ -44,5 +44,5 @@ process_result_t publish_message(const char *channel, message_type_t msgType, js
     }
 
     json_object_put(msgObj);
-    return PROCESS_SUCCESS;
+    return result;
 }

@@ -19,6 +19,10 @@ AM_LDFLAGS = ${CONF_LDFLAGS}
 ACLOCAL_AMFLAGS = -I m4
 
 bin_PROGRAMS = bin/pubnub_example
+bin_SCRIPTS = bin/channel_flood.py
+
+bin/channel_flood.py: src/channel_flood.py
+	$(INSTALL) -D $< $@
 
 pubnub_example_files =  src/listener.c \
 				src/data_message.c \

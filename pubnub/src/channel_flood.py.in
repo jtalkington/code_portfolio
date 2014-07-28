@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+import sys
+from Pubnub import Pubnub
+
+g_PublishKey = "@PUBNUB_PUBLISH_KEY@"
+g_SubscribeKey = "@PUBNUB_SUBSCRIBE_KEY@"
+g_SecretKey = ''
+g_CipherKey = ''
+g_SSLOn = ''
+
+pubnub = Pubnub(publish_key=g_PublishKey, subscribe_key=g_SubscribeKey,
+                        secret_key=g_SecretKey, cipher_key=g_CipherKey,
+                        ssl_on=g_SSLOn)
+
+channel = "@PUBNUB_MESSAGE_CHANNEL@"
+
+for i in range(0, 256):
+    message = "{ \"messageType\" : 0, \"data\" : { \"sleep\":0, \"UUID\": "+ str(i) + "} }"
+    pubnub.publish(channel, message)
+
+

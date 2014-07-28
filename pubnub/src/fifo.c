@@ -115,6 +115,10 @@ void *fifo_queue_shift(fifo_queue_t *queue) {
         return entry;
     }
 
-    return entry->data;
+    void *data = entry->data;
+
+    free(entry);
+
+    return data;
 }
 
