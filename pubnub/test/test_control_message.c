@@ -74,8 +74,8 @@ START_TEST(test_convert_control_message_to_json) {
 
 } END_TEST;
 
-Suite *control_channel_suite() {
-    Suite *s = suite_create("control_channel");
+Suite *control_message_suite() {
+    Suite *s = suite_create("control_message");
 
     ADD_TEST(test_create_control_message);
     ADD_TEST(test_convert_control_message_to_json);

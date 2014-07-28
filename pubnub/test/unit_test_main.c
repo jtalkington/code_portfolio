@@ -19,7 +19,7 @@
 #include <check.h>
 #include "common.h"
 
-bool g_Shutdown = false;
+volatile bool g_Shutdown = false;
 
 Suite *create_master_suite() {
     return suite_create("master_suite");
@@ -30,8 +30,8 @@ int main() {
 
     SRunner *sr = srunner_create(create_master_suite());
 
-    ADD_SUITE(control_channel_suite);
-    ADD_SUITE(data_channel_proccess_suite);
+    ADD_SUITE(control_message_suite);
+    ADD_SUITE(data_message_proccess_suite);
     
     srunner_run_all(sr, CK_NORMAL);
 

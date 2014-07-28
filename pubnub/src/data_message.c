@@ -17,10 +17,10 @@
 #include <json.h>
 #include <stdint.h>
 
-#include "data_channel_process.h"
+#include "data_message.h"
 #include "process.h"
 #include "log.h"
-#include "data_channel_worker.h"
+#include "worker.h"
 #include "json_misc.h"
 
 /**
@@ -50,7 +50,7 @@ data_message_t* extract_data_message(json_object *msg) {
     return data;
 }
 
-void process_message(struct pubnub *pnCtx, json_object *msg) {
+void process_data_message(struct pubnub *pnCtx, json_object *msg) {
 
     // Extract the message from the array.  The PubNub library already removes
     // the time_token and channel lists from the array, so it ends up being a
@@ -63,6 +63,4 @@ void process_message(struct pubnub *pnCtx, json_object *msg) {
     json_object_put(msg);
 
     dispatch_work(work);
-
-
 }

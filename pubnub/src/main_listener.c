@@ -21,7 +21,7 @@
 #include "config.h"
 #include "listener.h"
 
-bool g_Shutdown = false;
+volatile bool g_Shutdown = false;
 
 int main() {
 

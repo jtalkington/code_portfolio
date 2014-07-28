@@ -33,7 +33,7 @@ static struct pubnub_sync *sg_Sync = NULL;
 static struct pubnub *sg_Pn = NULL;
 
 /// @TODO Implement a signal handler for graceful shutdown.
-extern bool g_Shutdown;
+extern volatile bool g_Shutdown;
 
 process_result_t listener_init() {
 
@@ -68,7 +68,7 @@ process_result_t listener_loop(const char *channel) {
         }
 #endif
         
-        process_message(sg_Pn, msg);
+        process_data_message(sg_Pn, msg);
     
     } while (g_Shutdown == false);
 

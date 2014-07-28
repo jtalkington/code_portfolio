@@ -36,8 +36,8 @@ START_TEST(test_extract_data_message) {
 
 } END_TEST;
 
-Suite *data_channel_proccess_suite() {
-    Suite *s = suite_create("data_channel_proccess");
+Suite *data_message_proccess_suite() {
+    Suite *s = suite_create("data_message_proccess");
 
     ADD_TEST(test_extract_data_message);
     

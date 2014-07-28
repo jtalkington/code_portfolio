@@ -20,8 +20,8 @@
 #include <json.h>
 #include <stdio.h>
 
-#include "data_channel.h"
-#include "control_channel.h"
+#include "control_message.h"
+#include "message_types.h"
 #include "publisher.h"
 
 control_message_t* create_control_message(data_message_t *dataMsg) {
@@ -69,7 +69,7 @@ process_result_t publish_control_message(control_message_t *msg) {
     json_object *msgJson = NULL;
     msgJson = convert_control_message_to_json(msg);
 
-    result = publish_message("control_channel", msgJson);
+    result = publish_message("control_message", msgJson);
 
     json_object_put(msgJson);
     free(msg);

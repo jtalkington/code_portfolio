@@ -16,9 +16,8 @@
 
 #include <check.h>
 
-#include "../src/data_channel.h"
-#include "../src/data_channel_process.h"
-#include "../src/control_channel.h"
+#include "../src/data_message.h"
+#include "../src/control_message.h"
 #include "../src/process.h"
 #include "../src/json_misc.h"
 

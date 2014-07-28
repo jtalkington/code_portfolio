@@ -14,26 +14,12 @@
 # * limitations under the License.
 # */
 
-#ifndef __control_channel_h_
-#define __control_channel_h_
+#ifndef __control_message_h_
+#define __control_message_h_
 
 #include <stdbool.h>
 #include "process.h"
-
-typedef struct control_message_t {
-    /// The thread id of the worker 
-    uint64_t workerId;
-
-    /// The uuid of the processed message. Unfortunately the API does not expose
-    /// time_token, so we have to generate it in the request. Exposing it in the
-    /// API would be trivial, but I want this program to work with the existing
-    /// code. 
-    uint64_t uuid;
-
-    /// The result of the processing.
-    const char *result;
-
-} control_message_t;
+#include "message_types.h"
 
 /**
  * @brief Creates a control_message_t object and returns it's pointer to the
@@ -49,7 +35,7 @@ control_message_t* create_control_message(data_message_t *dataMsg);
  *
  * @returns A process_result_t result code.
  */
-process_result_t control_channel_init();
+process_result_t control_message_init();
 
 /**
  * @brief Publish and free a control message.
@@ -68,5 +54,5 @@ process_result_t publish_control_message(control_message_t *msg);
 json_object *convert_control_message_to_json(control_message_t *msg);
 
 
-#endif // __control_channel_h_
+#endif // __control_message_h_
 

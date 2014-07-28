@@ -17,9 +17,9 @@
 #include <json.h>
 #include <unistd.h>
 
-#include "data_channel_worker.h"
+#include "worker.h"
 #include "log.h"
-#include "control_channel.h"
+#include "control_message.h"
 
 
 /**

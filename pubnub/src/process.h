@@ -33,6 +33,6 @@ const char *get_process_result_string(process_result_t result);
  * @TODO Convert this into a callback that is set when the listener_loop() is
  * called.
  */
-void process_message(struct pubnub *pnCtx, json_object *msg);
+void process_data_message(struct pubnub *pnCtx, json_object *msg);
 
 #endif // __process_h_

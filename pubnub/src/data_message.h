@@ -14,16 +14,19 @@
 # limitations under the License.
 #*/
 
-#ifndef __data_channel_worker_h__
-#define __data_channel_worker_h__
+#include <json.h>
+#include <stdint.h>
 
-#include "data_channel.h"
+#include "process.h"
+#include "message_types.h"
 
 /**
- * @brief Dispatches the work.
- * @param work The data_message_t information about the work to be done.
+ * @brief Create an data_message_t* object from a pubnub subscribe response.
+ *
+ * @param msg The message returned from a pubnub sync.
+ * @returns A freshly allocated data_message_t pointer. It is the
+ * responsibility of the caller to free.
  */
-void dispatch_work(data_message_t *work);
+data_message_t* extract_data_message(json_object *msg);
 
 
-#endif // __data_channel_worker_h__

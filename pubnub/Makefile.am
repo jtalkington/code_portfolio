@@ -21,9 +21,9 @@ ACLOCAL_AMFLAGS = -I m4
 bin_PROGRAMS = bin/pubnub_listener
 
 source_files =  src/listener.c \
-				src/data_channel_process.c \
-				src/data_channel_worker.c \
-				src/control_channel.c \
+				src/data_message.c \
+				src/worker.c \
+				src/control_message.c \
 				src/pubnub_init.c \
 				src/process.c \
 				src/publisher.c \
@@ -39,9 +39,9 @@ bin_test_queue_SOURCES = test/test_queue.c
 bin_test_queue_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
 bin_test_queue_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
 
-bin_test_control_channel_SOURCES = test/test_control_channel.c \
+bin_test_control_channel_SOURCES = test/test_control_message.c \
 								   test/unit_test_main.c \
-								   test/test_data_channel_proccess.c \
+								   test/test_data_message.c \
 								   ${source_files}
 bin_test_control_channel_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
 bin_test_control_channel_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}

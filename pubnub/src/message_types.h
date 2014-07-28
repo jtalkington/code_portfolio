@@ -14,8 +14,8 @@
 # limitations under the License.
 #*/
 
-#ifndef __data_channel_h_
-#define __data_channel_h_
+#ifndef __message_types_h_
+#define __message_types_h_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -23,9 +23,17 @@
 #include "process.h"
 
 /**
+ * The available message types.
+ */
+typedef enum message_type_t {
+    MESSAGE_TYPE_DATA,
+    MESSAGE_TYPE_CONTROL
+} message_type_t;
+
+/**
  * @brief The parsed contents of a message on the data channel.
  *
- * This is the data that is sent in a data_channel message, in struct form.
+ * This is the data that is sent in a data_message message, in struct form.
  */
 typedef struct data_message_t {
     /// The uuid of the processed message. Unfortunately the API does not expose
@@ -42,5 +50,21 @@ typedef struct data_message_t {
 
 } data_message_t;
 
-#endif // __data_channel_h_
+typedef struct control_message_t {
+    /// The thread id of the worker 
+    uint64_t workerId;
+
+    /// The uuid of the processed message. Unfortunately the API does not expose
+    /// time_token, so we have to generate it in the request. Exposing it in the
+    /// API would be trivial, but I want this program to work with the existing
+    /// code. 
+    uint64_t uuid;
+
+    /// The result of the processing.
+    const char *result;
+
+} control_message_t;
+
+
+#endif // __message_types_h_
 
