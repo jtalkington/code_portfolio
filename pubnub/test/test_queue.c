@@ -22,7 +22,7 @@
 #include "../src/fifo.c"
 
 START_TEST(test_fq_push) {
-    fifo_queue_t *fq = fifo_queue_init();
+    fifo_queue_t *fq = fifo_queue_new();
 
     fqueue_entry_t *first = calloc(1, sizeof(fqueue_entry_t));
     fqueue_entry_t *second = calloc(1, sizeof(fqueue_entry_t));
@@ -58,7 +58,7 @@ START_TEST(test_fq_push) {
 
 START_TEST(test_fq_shift) {
 
-    fifo_queue_t *fq = fifo_queue_init();
+    fifo_queue_t *fq = fifo_queue_new();
     
     fqueue_entry_t *first = calloc(1, sizeof(fqueue_entry_t));
     fqueue_entry_t *second = calloc(1, sizeof(fqueue_entry_t));
@@ -105,7 +105,7 @@ START_TEST(test_fq_shift) {
 
 START_TEST(test_fifo_queue_push) {
 
-    fifo_queue_t *fq = fifo_queue_init();
+    fifo_queue_t *fq = fifo_queue_new();
 
     const char *data1 = "data1";
 
@@ -119,7 +119,7 @@ START_TEST(test_fifo_queue_push) {
 
 START_TEST(test_fifo_queue_shift) {
 
-    fifo_queue_t *fq = fifo_queue_init();
+    fifo_queue_t *fq = fifo_queue_new();
 
     const char *data1 = "data1";
     fifo_queue_push(fq, (void *)data1);

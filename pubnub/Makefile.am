@@ -18,9 +18,9 @@ AM_CPPFLAGS = -Wall -Werror ${CONF_CPPFLAGS}
 AM_LDFLAGS = ${CONF_LDFLAGS}
 ACLOCAL_AMFLAGS = -I m4
 
-bin_PROGRAMS = bin/pubnub_listener
+bin_PROGRAMS = bin/pubnub_example
 
-source_files =  src/listener.c \
+pubnub_example_files =  src/listener.c \
 				src/data_message.c \
 				src/worker.c \
 				src/control_message.c \
@@ -28,23 +28,25 @@ source_files =  src/listener.c \
 				src/process.c \
 				src/publisher.c \
 				src/json_misc.c \
+				src/stats.c \
 				src/fifo.c
 
-bin_pubnub_listener_SOURCES = src/main_listener.c ${source_files}
+bin_pubnub_example_SOURCES = src/pubnub_example.c ${pubnub_example_files}
 
 if ENABLE_TEST
-check_PROGRAMS = bin/test_queue bin/test_control_channel
+check_PROGRAMS = bin/test_queue bin/test_misc
 TESTS = $(check_PROGRAMS)
 bin_test_queue_SOURCES = test/test_queue.c
 bin_test_queue_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
 bin_test_queue_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
 
-bin_test_control_channel_SOURCES = test/test_control_message.c \
-								   test/unit_test_main.c \
-								   test/test_data_message.c \
-								   ${source_files}
-bin_test_control_channel_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
-bin_test_control_channel_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
+bin_test_misc_SOURCES = test/test_control_message.c \
+					    test/unit_test_main.c \
+					    test/test_data_message.c \
+					    ${pubnub_example_files}
+
+bin_test_misc_CPPFLAGS = $(AM_CPPFLAGS) ${TEST_CFLAGS}
+bin_test_misc_LDFLAGS = $(AM_LDFLAGS) ${TEST_LDFLAGS}
 
 endif
 

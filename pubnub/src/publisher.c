@@ -29,13 +29,20 @@ process_result_t publisher_init() {
     return init_pubnub_sync_context(&sg_Pn, &sg_Sync);
 }
 
-process_result_t publish_message(const char *channel, json_object *msg) {
+process_result_t publish_message(const char *channel, message_type_t msgType, json_object *msg) {
 
-    pubnub_publish(sg_Pn, channel, msg, -1, NULL, NULL);
+    process_result_t result = PROCESS_SUCCESS; 
+
+    json_object *msgObj = json_object_new_object();
+    json_object_object_add(msgObj, "messageType", json_object_new_int(msgType));
+    json_object_object_add(msgObj, "data", msg);
+
+    pubnub_publish(sg_Pn, channel, msgObj, -1, NULL, NULL);
 
     if (pubnub_sync_last_result(sg_Sync) != PNR_OK) {
-        return PROCESS_PUBLISH_FAIL;
+        result = PROCESS_PUBLISH_FAIL;
     }
 
+    json_object_put(msgObj);
     return PROCESS_SUCCESS;
 }

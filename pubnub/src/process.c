@@ -15,6 +15,8 @@
 # */
 
 #include "process.h"
+#include "data_message.h"
+#include "control_message.h"
 
 const char *get_process_result_string(process_result_t result) {
 

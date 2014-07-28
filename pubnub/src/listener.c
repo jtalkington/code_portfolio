@@ -24,6 +24,8 @@
 #include "process.h"
 #include "log.h"
 #include "pubnub_init.h"
+#include "worker.h"
+#include "stats.h"
 
 // These are static to keep the publish/subscribe contexts separate.
 
@@ -33,7 +35,7 @@ static struct pubnub_sync *sg_Sync = NULL;
 static struct pubnub *sg_Pn = NULL;
 
 /// @TODO Implement a signal handler for graceful shutdown.
-extern volatile bool g_Shutdown;
+volatile bool g_Shutdown;
 
 process_result_t listener_init() {
 
@@ -57,6 +59,8 @@ process_result_t listener_loop(const char *channel) {
         if (retVal != PNR_OK) {
             return PROCESS_PN_SUBSCRIBE_FAIL;
         }
+        
+        message_count_increment(COUNTER_MESSAGE_RECEIVED);
 
         struct json_object *msg = pubnub_sync_last_response(sg_Sync);
 
@@ -67,8 +71,9 @@ process_result_t listener_loop(const char *channel) {
             LOG_DEBUG("received: %s\n", json_object_get_string(obj));
         }
 #endif
-        
-        process_data_message(sg_Pn, msg);
+
+        dispatch_work(msg);
+
     
     } while (g_Shutdown == false);
 

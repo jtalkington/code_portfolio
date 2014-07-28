@@ -20,8 +20,7 @@
 
 #include "config.h"
 #include "listener.h"
-
-volatile bool g_Shutdown = false;
+#include "worker.h"
 
 int main() {
 
@@ -29,7 +28,8 @@ int main() {
     curl_global_init(CURL_GLOBAL_ALL);
 
     listener_init();
+    init_workers();
 
-    return listener_loop("data_channel");
+    return listener_loop(PUBNUB_MESSAGE_CHANNEL);
 
 }

@@ -20,7 +20,11 @@
 #include "worker.h"
 #include "log.h"
 #include "control_message.h"
+#include "data_message.h"
+#include "fifo.h"
+#include "json_misc.h"
 
+static fifo_queue_t *sg_WorkQueue = NULL;
 
 /**
  * @brief Finish processing a data_message_t object and free it.
@@ -28,29 +32,50 @@
  * @param work The object to finish processing on.
  * @param result The process_result_t result.
  */
-void finish_work(data_message_t *work) {
+/**
+ * Rip a message from the queue and process it. One day this will be from a
+ * thread pool.
+ */
+void worker_thread_work() {
+    json_object *pnMsg = (json_object *)fifo_queue_shift(sg_WorkQueue);
 
-    control_message_t *ctrlMsg = create_control_message(work);
+    // The message comes as a one element array.
+    json_object *msgData = json_object_array_get_idx(pnMsg, 0);
 
-    LOG_DEBUG("Created control channel object: %"PRIu64", %"PRIu64", %s.\n",
-            ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
+    json_object *msg;
+    json_object_object_get_ex(msgData, "data", &msg);
 
-    publish_control_message(ctrlMsg);
-    
-    free(work);
-}
+    message_type_t type;
+    json_get_int(msgData, "messageType", &type);
 
-void dispatch_work(data_message_t *work) {
-
-    // There was a parsing failure, just bail.
-    if (work->result != PROCESS_SUCCESS) {
-        finish_work(work);
-        return;
+    switch (type) {
+        case MESSAGE_TYPE_DATA: 
+            {
+                process_data_message_json(msg);
+            } break;
+        case MESSAGE_TYPE_CONTROL:
+            {
+                process_control_message_json(msg);
+            } break;
+        default:
+            break;
     }
 
-    LOG_DEBUG("Sleeping %i seconds...\n", work->sleepTime);
-    sleep(work->sleepTime);
-
-    finish_work(work);
+    json_object_put(msg);
+    json_object_put(msgData);
+    json_object_put(pnMsg);
 }
 
+void dispatch_work(json_object *msg) {
+
+    fifo_queue_push(sg_WorkQueue, msg);
+    worker_thread_work();
+}
+
+void init_workers() {
+    if (sg_WorkQueue != NULL) {
+        return;
+    }
+    
+    sg_WorkQueue = fifo_queue_new();
+}

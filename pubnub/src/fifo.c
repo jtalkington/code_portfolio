@@ -28,7 +28,7 @@ struct fifo_queue_t {
     fqueue_entry_t *tail;
 };
 
-fifo_queue_t *fifo_queue_init() {
+fifo_queue_t *fifo_queue_new() {
     fifo_queue_t *newQueue = calloc(1, sizeof(fifo_queue_t));
 
     return newQueue;

@@ -27,7 +27,7 @@ typedef struct fifo_queue_t fifo_queue_t;
  *
  * @returns A newly allocated fifo_queue, or NULL if there was a memory failure.
  */
-fifo_queue_t *fifo_queue_init();
+fifo_queue_t *fifo_queue_new();
 
 /**
  * @brief Insert a data object onto the queue.

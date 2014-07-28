@@ -16,6 +16,8 @@
 
 AC_INIT([pubnub-example], 1.0.0, jtalkington@users.noreply.github.com)
 
+AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test", [The PubNub channel to use.])
+
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([foreign subdir-objects])

@@ -31,14 +31,14 @@ START_TEST(test_create_control_message) {
     control_message_t *ctrlMsg = create_control_message(&dataMsg);
 
     ck_assert(ctrlMsg->uuid == dataMsg.uuid);
-    ck_assert(strcmp(ctrlMsg->result, get_process_result_string(dataMsg.result)) == 0);
+    ck_assert(strcmp(ctrlMsg->dataResult, get_process_result_string(dataMsg.result)) == 0);
 
 } END_TEST;
 
 START_TEST(test_convert_control_message_to_json) {
 
     control_message_t ctrlMsg;
-    ctrlMsg.result = "success";
+    ctrlMsg.dataResult = "success";
     ctrlMsg.uuid = 7;
     ctrlMsg.workerId = 5;
 
@@ -69,7 +69,7 @@ START_TEST(test_convert_control_message_to_json) {
 
     const char *resultString = json_get_string(jsonMsg, "result");
     ck_assert(resultString != NULL);
-    ck_assert(strcmp(resultString, ctrlMsg.result) == 0);
+    ck_assert(strcmp(resultString, ctrlMsg.dataResult) == 0);
 
 
 } END_TEST;

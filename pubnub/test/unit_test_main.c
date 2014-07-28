@@ -19,8 +19,6 @@
 #include <check.h>
 #include "common.h"
 
-volatile bool g_Shutdown = false;
-
 Suite *create_master_suite() {
     return suite_create("master_suite");
 }

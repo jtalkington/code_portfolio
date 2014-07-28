@@ -53,6 +53,12 @@ process_result_t publish_control_message(control_message_t *msg);
  */
 json_object *convert_control_message_to_json(control_message_t *msg);
 
+/**
+ * Process a control message json.
+ *
+ * @param msg The extracted data json object from the control message.
+ */
+void process_control_message_json(json_object *msg);
 
 #endif // __control_message_h_
 

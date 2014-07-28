@@ -17,13 +17,19 @@
 #ifndef __worker_h__
 #define __worker_h__
 
+#include <json.h>
+
 #include "message_types.h"
 
 /**
  * @brief Dispatches the work.
  * @param work The data_message_t information about the work to be done.
  */
-void dispatch_work(data_message_t *work);
+void dispatch_work(json_object *work);
 
+/**
+ * Initialize the workers.
+ */
+void init_workers(void);
 
 #endif // __worker_h__

@@ -29,4 +29,10 @@
  */
 data_message_t* extract_data_message(json_object *msg);
 
-
+/**
+ * @brief Process a response from a sync subscribe request.
+ *
+ * @param msg The sync response.
+ *
+ */
+void process_data_message_json(json_object *msg);

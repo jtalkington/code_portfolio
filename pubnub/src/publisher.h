@@ -16,6 +16,7 @@
 
 #include <json.h>
 #include "process.h"
+#include "message_types.h"
 
 /**
  * @brief Initialize the publisher context.
@@ -29,4 +30,4 @@ process_result_t publisher_init(void);
  * @param channel The channel to publish on.
  * @param msg The json message to send.
  */
-process_result_t publish_message(const char *channel, json_object *msg);
+process_result_t publish_message(const char *channel, message_type_t msgType, json_object *msg);

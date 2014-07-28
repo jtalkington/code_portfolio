@@ -23,11 +23,12 @@
 #include "process.h"
 
 /**
- * The available message types.
+ * The available message types. These have to have specific values to be
+ * portable.
  */
 typedef enum message_type_t {
-    MESSAGE_TYPE_DATA,
-    MESSAGE_TYPE_CONTROL
+    MESSAGE_TYPE_DATA = 0,
+    MESSAGE_TYPE_CONTROL = 1,
 } message_type_t;
 
 /**
@@ -51,7 +52,7 @@ typedef struct data_message_t {
 } data_message_t;
 
 typedef struct control_message_t {
-    /// The thread id of the worker 
+    /// The thread id of the worker that handled the data message.
     uint64_t workerId;
 
     /// The uuid of the processed message. Unfortunately the API does not expose
@@ -61,7 +62,10 @@ typedef struct control_message_t {
     uint64_t uuid;
 
     /// The result of the processing.
-    const char *result;
+    const char *dataResult;
+
+    /// The results of processing
+    process_result_t result;
 
 } control_message_t;
 

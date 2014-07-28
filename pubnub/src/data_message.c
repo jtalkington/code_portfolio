@@ -16,12 +16,15 @@
 
 #include <json.h>
 #include <stdint.h>
+#include <unistd.h>
 
 #include "data_message.h"
+#include "control_message.h"
 #include "process.h"
 #include "log.h"
 #include "worker.h"
 #include "json_misc.h"
+#include "stats.h"
 
 /**
  * @brief Create an data_message_t* object from a pubnub subscribe response.
@@ -37,12 +40,14 @@ data_message_t* extract_data_message(json_object *msg) {
 
     data->result = json_get_int(msg, "sleep", &data->sleepTime);
     if (data->result != PROCESS_SUCCESS) {
+        LOG_ERROR("Could not extract \"sleep\" from data message");
         free(data);
         return NULL;
     }
 
     data->result = json_get_uint64(msg, "UUID", &data->uuid);
     if (data->result != PROCESS_SUCCESS) {
+        LOG_ERROR("Could not extract \"UUID\" from data message");
         free(data);
         return NULL;
     }
@@ -50,17 +55,44 @@ data_message_t* extract_data_message(json_object *msg) {
     return data;
 }
 
-void process_data_message(struct pubnub *pnCtx, json_object *msg) {
+/**
+ * Send a control message acknowledment and free up the work.
+ *
+ * @param work The message that was worked on.
+ */
+static void finish_data_message_work(data_message_t *work) {
 
-    // Extract the message from the array.  The PubNub library already removes
-    // the time_token and channel lists from the array, so it ends up being a
-    // one object array.
-    json_object *msgData = json_object_array_get_idx(msg, 0);
-    
-    data_message_t *work = extract_data_message(msgData);
+    control_message_t *ctrlMsg = create_control_message(work);
 
-    // We are done with this object now.
-    json_object_put(msg);
+    if (work->result == PROCESS_SUCCESS) {
+        LOG_DEBUG("Created control channel object: %"PRIu64", %"PRIu64", %s.\n",
+            ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->dataResult);
 
-    dispatch_work(work);
+        publish_control_message(ctrlMsg);
+        message_count_increment(COUNTER_DATA_SUCCESS);
+    } else {
+        message_count_increment(COUNTER_DATA_ERROR);
+    }
+
+    print_stats();
+
+    free(work);
+}
+
+void process_data_message_json(json_object *msg) {
+
+    data_message_t *work = extract_data_message(msg);
+
+    if (work == NULL) {
+        message_count_increment(COUNTER_DATA_ERROR);
+        return;
+    }
+
+    // Only continue processing if successful.
+    if (work->result == PROCESS_SUCCESS) {
+        LOG_DEBUG("Sleeping %i seconds...\n", work->sleepTime);
+        sleep(work->sleepTime);
+    }
+
+    finish_data_message_work(work);
 }

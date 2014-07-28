@@ -21,9 +21,9 @@
 #include "config.h"
 
 #ifdef ENABLE_DEBUG
-# define LOG_DEBUG printf
+# define LOG_DEBUG(format, ...) printf("%s %i: " format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 #endif
 
-#define LOG_ERROR  printf
+# define LOG_ERROR(format, ...) printf("%s %i: " format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 
 #endif //__log_h_
