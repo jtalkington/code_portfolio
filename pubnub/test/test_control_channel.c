@@ -48,6 +48,8 @@ START_TEST(test_convert_control_message_to_json) {
 
     { // keep the definitions in the foreach macro from polluting the scope
         json_object_object_foreach(jsonMsg, key, val) {
+            (void)key;
+            (void)val;
             i++;
         }
     }

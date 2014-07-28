@@ -48,11 +48,11 @@ json_object *convert_control_message_to_json(control_message_t *msg) {
     tmpVal = json_object_new_string(msg->result);
     json_object_object_add(newObj, "result", tmpVal);
 
-    sprintf(strVal, "%llu", msg->uuid);
+    sprintf(strVal, "%"PRIu64, msg->uuid);
     tmpVal = json_object_new_string(strVal);
     json_object_object_add(newObj, "UUID", tmpVal);
 
-    sprintf(strVal, "%llu", msg->workerId);
+    sprintf(strVal, "%"PRIu64, msg->workerId);
     tmpVal = json_object_new_string(strVal);
     json_object_object_add(newObj, "workerId", tmpVal);
 

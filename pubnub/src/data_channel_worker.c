@@ -32,7 +32,7 @@ void finish_work(data_message_t *work) {
 
     control_message_t *ctrlMsg = create_control_message(work);
 
-    LOG_DEBUG("Created control channel object: %llu, %llu, %s.\n",
+    LOG_DEBUG("Created control channel object: %"PRIu64", %"PRIu64", %s.\n",
             ctrlMsg->workerId, ctrlMsg->uuid, ctrlMsg->result);
 
     publish_control_message(ctrlMsg);
