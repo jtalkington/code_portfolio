@@ -14,8 +14,9 @@
 # limitations under the License.
 #*/
 
-AC_INIT([pubnub-example], 1.0.1, jtalkington@users.noreply.github.com)
+AC_INIT([jtalkington-pubnub-example], 1.0.1, jtalkington@users.noreply.github.com)
 
+# @TODO Get all of the configurable stuff from a config file.
 AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test", [The PubNub channel to use.])
 AC_SUBST([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test")
 
