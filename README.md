@@ -1,7 +1,5 @@
-Jerry Talkington's Code Portfolio
+This Page Has Moved
 =================================
 
-
-Here are examples of code I've written, broken down by directory:
-
- * pubnub - Contains sample code using the PubNub messaging APIs.
+This repository is now empty. Please see http://jtalkington.github.io for my
+code repository.
