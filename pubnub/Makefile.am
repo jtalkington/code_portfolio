@@ -22,7 +22,10 @@ bin_PROGRAMS = bin/pubnub_example
 bin_SCRIPTS = bin/channel_flood.py
 
 bin/channel_flood.py: src/channel_flood.py
-	$(INSTALL) -D $< $@
+	$(MKDIR_P) bin
+	$(INSTALL) $< $@
+
+noinst_HEADERS = $(wildcard $(top_srcdir)/src/*.h*) $(wildcard $(top_srcdir)/test/*.h*)
 
 pubnub_example_files =  src/listener.c \
 				src/data_message.c \

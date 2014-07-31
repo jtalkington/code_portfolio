@@ -99,7 +99,9 @@ char *get_message_stats_string() {
                           "    Send Failures:  %"PRIu64"\n"
                           "  Other\n"
                           "    Unknown Errors: %"PRIu64"\n"
-                          "    Total Received: %"PRIu64"\n";
+                          "    Total Received: %"PRIu64"\n"
+                          "\n";
+
 
     size_t responseSize = strlen(format) + (21 * MESSAGE_COUNTER_ELEMENTS);
     char *response = calloc(1, responseSize);

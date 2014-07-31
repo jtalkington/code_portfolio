@@ -44,6 +44,13 @@ void worker_thread_work() {
     json_object *msgData = json_object_array_get_idx(pnMsg, 0);
 
     if (msgData == NULL) {
+#ifdef ENABLE_DEBUG
+        int len = json_object_array_length(pnMsg);
+        for (int i = 0; i < len; i++) {
+            json_object *obj = json_object_array_get_idx(pnMsg, i);
+            LOG_DEBUG("received: %s\n", json_object_get_string(obj));
+        }
+#endif
         /// @TODO make this a distinct type.
         message_count_increment(COUNTER_UNKOWN_ERROR);
         json_object_put(pnMsg);
@@ -56,7 +63,6 @@ void worker_thread_work() {
     if (msg == NULL) {
         /// @TODO make this a distinct type.
         message_count_increment(COUNTER_UNKOWN_ERROR);
-        json_object_put(msgData);
         json_object_put(pnMsg);
         return;
     }
@@ -81,8 +87,6 @@ void worker_thread_work() {
             break;
     }
 
-    json_object_put(msg);
-    json_object_put(msgData);
     json_object_put(pnMsg);
 }
 

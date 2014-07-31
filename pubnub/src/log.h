@@ -21,7 +21,9 @@
 #include "config.h"
 
 #ifdef ENABLE_DEBUG
-# define LOG_DEBUG(format, ...) printf("%s %i: " format "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+# define LOG_DEBUG(format, ...) fprintf(stderr, "%s %i: " format "\n", __FILE__, __LINE__, ##__VA_ARGS__); fflush(stderr);
+#else
+# define LOG_DEBUG(...) /* (##__VA_ARGS__) */
 #endif
 
 # define LOG_ERROR(format, ...) printf("%s %i: " format "\n", __FILE__, __LINE__, ##__VA_ARGS__)

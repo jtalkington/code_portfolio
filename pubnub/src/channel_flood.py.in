@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import time
 from Pubnub import Pubnub
 
 g_PublishKey = "@PUBNUB_PUBLISH_KEY@"
@@ -15,8 +16,8 @@ pubnub = Pubnub(publish_key=g_PublishKey, subscribe_key=g_SubscribeKey,
 
 channel = "@PUBNUB_MESSAGE_CHANNEL@"
 
-for i in range(0, 256):
-    message = '{ "messageType": 0, "data": { "sleep": 0,"UUID": ' + str(i) + '} }'
+for i in range(25):
+    message = { "messageType": 0, "data": { "sleep": 0,"UUID": i } }
     pubnub.publish(channel, message)
-
+    time.sleep(0.100);
 

@@ -14,7 +14,7 @@
 # limitations under the License.
 #*/
 
-AC_INIT([pubnub-example], 1.0.0, jtalkington@users.noreply.github.com)
+AC_INIT([pubnub-example], 1.0.1, jtalkington@users.noreply.github.com)
 
 AC_DEFINE([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test", [The PubNub channel to use.])
 AC_SUBST([PUBNUB_MESSAGE_CHANNEL], "code_portfolio_pubnub_test")
@@ -43,7 +43,7 @@ AS_IF([test "x${with_pubkey}" != "x"],
 
 AC_SUBST([PUBNUB_PUBLISH_KEY], "${with_pubkey}")
 
-AC_DEFINE([ENABLE_DEBUG], [0], [Enable debugging output.])
+AH_TEMPLATE([ENABLE_DEBUG], [Enable debugging output.])
 
 AC_ARG_ENABLE([debug], 
     AS_HELP_STRING([--enable-debug], [Enable debugging output.]),
