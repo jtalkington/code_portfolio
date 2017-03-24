@@ -1,0 +1,6 @@
+/*
+ * Copyright 2017 Jerry Talkington
+ *
+ * No license is granted to use this software. This is provided for skill
+ * evaluation only. Do not copy or reuse this software for any purpose.
+ */
