@@ -7,4 +7,5 @@ Vagrantfile.
 
 Here are the available projects:
 
-* threading
+* [threading](https://github.com/jtalkington/code_portfolio/tree/master/threading)
+
